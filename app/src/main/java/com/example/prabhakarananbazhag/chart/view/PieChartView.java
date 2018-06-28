@@ -64,10 +64,10 @@ public class PieChartView extends View{
                 paint.setTextAlign(Paint.Align.CENTER);
                 String name = String.valueOf(pieChartData.getData().get(i).getX());
                 if (paint.measureText(name) > pathLength) {
-                    while (paint.measureText(name) < pathLength) {
+                    while (paint.measureText(name) > pathLength) {
                         name = name.substring(0, name.length() - 1);
                     }
-                    canvas.drawTextOnPath(name.substring(0, name.length() - 3).concat("..."), p, 0, 0, paint);
+                    canvas.drawTextOnPath(name.substring(0, name.length() - 1).concat("..."), p, 0, 0, paint);
                 } else {
                     canvas.drawTextOnPath(String.valueOf(pieChartData.getData().get(i).getX()), p, 0, 0, paint);
                 }

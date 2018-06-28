@@ -16,7 +16,6 @@ public class ChartView extends View{
     public ChartView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         paint.setColor(Color.BLACK);
-
         plot.setColor(Color.BLACK);
         axis.setColor(Color.RED);
     }
@@ -82,7 +81,7 @@ public class ChartView extends View{
         HashMap ypixel = new HashMap();
         for(int i=0;i<yscale_count;i++) {
             int count;
-            canvas.drawCircle(xstart, ystart, 5, paint);
+            //canvas.drawCircle(xstart, ystart, 5, paint);
             //...............Resizing the txt...............//
             axis.setTextSize(130);
             while(axis.measureText(String.valueOf(yscale.get(i)))>dec){
@@ -119,7 +118,7 @@ public class ChartView extends View{
         int hxs = dec, hxst =breadth-dec, hys =length-dec, hyst =length-dec;
         int ysplit=((length-dec)-dec)/Yaxis.size();
         for (int i = 0; i <Yaxis.size(); i++) {
-            canvas.drawLine(hxs, hys, hxst, hyst,plot);
+           // canvas.drawLine(hxs, hys, hxst, hyst,plot);
             hys = hys -ysplit;
             hyst = hyst - ysplit;
         }
@@ -147,7 +146,7 @@ public class ChartView extends View{
         int xstart=dec+xsplit;int ystart=length-dec;
         HashMap xpixel = new HashMap();
         for(int i=0;i<Xaxis.size();i++) {
-            canvas.drawCircle(xstart, ystart, 5, paint);
+           // canvas.drawCircle(xstart, ystart, 5, paint);
             canvas.drawText( String.valueOf( Xaxis.get(i)), xstart, ystart+(dec/3),axis);
             xpixel.put( Xaxis.get(i), xstart);
             xstart+=xsplit;
@@ -214,7 +213,7 @@ public class ChartView extends View{
         int temp_inc=(int) (xsplit)/(xinc);
         for(int i=0;i<xscale_count;i++) {
             int count;
-            canvas.drawCircle(xstart, ystart, 5, paint);
+         //   canvas.drawCircle(xstart, ystart, 5, paint);
 
             //...............Resizing the txt...............//
             axis.setTextSize(130);

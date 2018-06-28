@@ -74,20 +74,25 @@ public class LineChartView extends ChartView {
                 Labels.add(l.getX());
                 Labels.add(l.getY());
             }
-            point.setTextAlign(Paint.Align.CENTER);
+
+            //.................Label Printing.............//
             int size=getWidth()/30;
             int size1=dec/4;
-            point.setTextSize(size);
-            labels.setTextSize(size1);
-            //canvas.drawText((String) Labels.get(0), breadth/2, size1, point);
-            int size2=dec/6;
-            point.setTextSize(size1);
-            canvas.drawText((String) Labels.get(0), breadth/2, size1*3, point);
+            StringBuffer heading =new StringBuffer();
+            heading.append(Labels.get(0)+" vs "+Labels.get(1));
+
+            //...............Resizing the txt...............//
+            labels.setTextSize(dec/2);
+            canvas.drawText(String.valueOf(heading), dec*4, (dec/2), labels);
+
+            labels.setTextSize(dec/4);
+            canvas.drawText((String) Labels.get(0), breadth/2, (dec/2)+(dec/3), labels);
             Path path = new Path();
-            path.moveTo(length-(2*size),length/2);
-            path.lineTo(length-50,length/2-100);
-            canvas.drawPath(path, point);
-            canvas.drawTextOnPath((String) Labels.get(1),path,0,0,point);
+            path.moveTo(breadth-(dec-(dec/2)),length/2);
+            path.lineTo(breadth-(dec-(dec/2)),length/2-100);
+            canvas.drawPath(path,labels);
+            canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);
+
             //...............Rectangle Creation..............
             paint.setColor(Color.BLACK);
             paint.setStyle(Paint.Style.STROKE);
@@ -157,6 +162,9 @@ public class LineChartView extends ChartView {
                 Object ycc =  yplot.get(val2);
                 x_i[j]=(int) xcc;
                 y_i[j]=(int) ycc;
+                StringBuffer label=new StringBuffer();
+                label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                canvas.drawText(String.valueOf(label), (int)xcc-10, (int)ycc-10, labels);
                 canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
             }
             for (int w11 = 0; w11 <xaxis.size() - 1; w11++) {
@@ -175,6 +183,9 @@ public class LineChartView extends ChartView {
                     Object xcc =  xplot.get(val1);
                     x_i[j]=(int) xcc;
                     y_i[j]=(int) ycc;
+                    StringBuffer label=new StringBuffer();
+                    label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                    canvas.drawText(String.valueOf(label), (int)xcc-10, (int)ycc-10, labels);
                     canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
                 }
                 else {
@@ -205,7 +216,6 @@ public class LineChartView extends ChartView {
                     else {
                         temp2=yplot.get((float)integer_part+1);
                     }
-                    //distance=Integer.parseInt((String) temp2)-Integer.parseInt((String) temp1);
                     distance=(int)temp2-(int)temp1;
                     //.................Internal Distance Calculation..............
                     float internal_distance=(float)distance/100;
@@ -216,6 +226,9 @@ public class LineChartView extends ChartView {
                     Object xcc_f =  xplot.get(val1);
                     x_i[j]=(int) xcc_f;
                     y_i[j]=(int) val;
+                    StringBuffer label=new StringBuffer();
+                    label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                    canvas.drawText(String.valueOf(label), (int)xcc_f-10, (int)val-10, labels);
                     canvas.drawCircle((int)xcc_f,(int) val, 5, coordinate);
                 }
             }
@@ -225,7 +238,6 @@ public class LineChartView extends ChartView {
         }
         if((xc==2)&&(yc==1)) {   //X Number....Y String....//
             for (int j = 0; j < s; j++) {
-                //int val1=Integer.parseInt ((String) xaxis.get(j));;
                 String val1=(String) xaxis.get(j);
                 float tc=Float.parseFloat(val1);
                 //Check wheather the number is Integer or Float..........
@@ -236,6 +248,9 @@ public class LineChartView extends ChartView {
                     Object ycc =  yplot.get(val2);
                     x_i[j]=(int) xcc;
                     y_i[j]=(int) ycc;
+                    StringBuffer label=new StringBuffer();
+                    label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                    canvas.drawText(String.valueOf(label), (int)xcc-10, (int)ycc-10, labels);
                     canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
                 }
                 else {
@@ -276,6 +291,9 @@ public class LineChartView extends ChartView {
                     Object ycc_f =  yplot.get(val2);
                     x_i[j]=(int) val;
                     y_i[j]=(int) ycc_f;
+                    StringBuffer label=new StringBuffer();
+                    label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                    canvas.drawText(String.valueOf(label), (int)val, (int)ycc_f-10, labels);
                     canvas.drawCircle((int)val,(int) ycc_f, 5, coordinate);
                 }
             }
@@ -291,15 +309,12 @@ public class LineChartView extends ChartView {
                 float tc_x=Float.parseFloat(val2_x);
                 //Check wheather the number is Integer or Float..........
                 if((xplot.containsKey(tc_x))) {
-                    Log.i("Enter xi","Enterinhg x int ");
                     float new_value_x=  Float.parseFloat((String)xaxis.get(j));
                     String val1_x= (String) xaxis.get(j);
                     float temp_val1_x=Float.parseFloat(val1_x);
                     xcc_f = (int) xplot.get(temp_val1_x);
-                    Log.i("msg","1 x");
                 }
                 else {
-                    Log.i("Enter xf","Entering x float");
                     float val_x;
                     //...............Float Logic.....
                     float xcc_x =Float.parseFloat((String) xaxis.get(j));
@@ -319,7 +334,6 @@ public class LineChartView extends ChartView {
                     //...........Distance between two Elements.................
                     int distance_x;
                     Object temp1=xplot.get((float)integer_part_x);
-                    Log.i("S", String.valueOf(temp1));
                     Object temp2;
                     int v=s-1;
                     if(j==v) {
@@ -335,24 +349,18 @@ public class LineChartView extends ChartView {
                     float pixel_new= (float)((float)internal_distance_x*decimal_part_x) ;
                     val_x=(int)temp1+pixel_new;
                     xcc_f = (int)val_x;
-                    Log.i("msg","Exit X float");
-
                 }
                 //....................Corresponding Y Range....................//
                 String val2_y=(String) yaxis.get(j);
                 float tc_y=Float.parseFloat(val2_y);
                 //Check wheather the number is Integer or Float..........
                 if((yplot.containsKey(tc_y))) {
-                    Log.i("Enter yi","Enterinhg y int ");
                     float new_value_y=  Float.parseFloat((String)yaxis.get(j));
                     String val1_y= (String) yaxis.get(j);
                     float temp_val1_y=Float.parseFloat(val1_y);
                     ycc_f = (int) yplot.get(temp_val1_y);
-                    Log.i("y ", String.valueOf((int)ycc_f));
-                    Log.i("msg","123");
                 }
                 else {
-                    Log.i("Enter yf ","Enterinhg y float ");
                     float val_y;
                     //...............Float Logic.....
                     float xcc_y =Float.parseFloat((String) yaxis.get(j));
@@ -390,11 +398,15 @@ public class LineChartView extends ChartView {
                 }
                 x_i[j]=(int) xcc_f;
                 y_i[j]=(int) ycc_f;
+                StringBuffer label=new StringBuffer();
+                label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
+                canvas.drawText(String.valueOf(label), (int)xcc_f-10, (int)ycc_f-10, labels);
                 canvas.drawCircle((int) xcc_f, (int)ycc_f, 5, coordinate);
             }
         }
         for (int w11 = 0; w11 <xaxis.size() - 1; w11++) {
             canvas.drawLine(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
+          //  canvas.d(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
         }
     }
 }
