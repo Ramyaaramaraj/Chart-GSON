@@ -43,12 +43,13 @@ public class PieChartView extends View{
         if(pieChartData!=null){
             float[] sweep=scale();
             int z=canvas.getWidth()/20;
-
+            int v=canvas.getWidth()/5;
             int w=canvas.getWidth()/30;
             int x=canvas.getWidth()-z;
             int y= canvas.getHeight()-z;
             RectF rectF = new RectF(z,z,x,y);
             RectF rectF1=new RectF(w,w,x+10,y+10);
+            RectF rectF2=new RectF(v,v,getWidth()-v,getHeight()-v); Paint paint2=new Paint();
             for(int i=0;i<pieChartData.getData().size();++i){
                 paint.setColor(Color.parseColor(String.valueOf(pieChartData.getData().get(i).getColour())));
                 Path p2=new Path();
@@ -56,10 +57,11 @@ public class PieChartView extends View{
                 p2.addArc(rectF,start,sweep[i]);
                 Path p = new Path();
                 p.addArc(rectF1, start, sweep[i]);
+                Path p3=new Path();
+                p3.addArc(rectF2,start,sweep[i]);
                 PathMeasure pathMeasure = new PathMeasure(p2, false);
                 float pathLength = pathMeasure.getLength();
                 paint.setColor(Color.BLACK);
-
                 paint.setTextSize(getWidth() / 25);
                 paint.setTextAlign(Paint.Align.CENTER);
                 String name = String.valueOf(pieChartData.getData().get(i).getX());
@@ -71,6 +73,10 @@ public class PieChartView extends View{
                 } else {
                     canvas.drawTextOnPath(String.valueOf(pieChartData.getData().get(i).getX()), p, 0, 0, paint);
                 }
+                paint2.setColor(Color.RED);
+                paint2.setTextSize(getWidth()/20);
+                paint2.setTextAlign(Paint.Align.CENTER);
+                canvas.drawTextOnPath(String.valueOf((pieChartData.getData().get(i).getY())),p3,0,0,paint2);
                 start += sweep[i];
             }
 
@@ -94,7 +100,7 @@ public class PieChartView extends View{
         }
         return total;
     }
-    public void start(int secs) {
+   /* public void start(int secs) {
         mTimerAnimator.setIntValues(0,360);
         mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(secs));
         mTimerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -104,7 +110,7 @@ public class PieChartView extends View{
                 invalidate();
             }});
         mTimerAnimator.start();
-    }
+    }*/
     public void setdata(PieChartData chartdata){
         pieChartData=chartdata;
         postInvalidate();

@@ -3,6 +3,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,6 +19,8 @@ public class ChartView extends View{
         paint.setColor(Color.BLACK);
         plot.setColor(Color.BLACK);
         axis.setColor(Color.RED);
+        axis.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
     }
     public ChartView(Context context) {
         super(context);
@@ -79,23 +82,28 @@ public class ChartView extends View{
         //.............ypoint fixing and Yscale Printing................
         int xstart=dec;  int ystart=length-dec-ysplit;
         HashMap ypixel = new HashMap();
-        for(int i=0;i<yscale_count;i++) {
-            int count;
-            //canvas.drawCircle(xstart, ystart, 5, paint);
-            //...............Resizing the txt...............//
+
+       /* int ysize[]=new int[Yaxis.size()];
+        for(int i=0;i<Yaxis.size();i++)
+        {
             axis.setTextSize(130);
-            while(axis.measureText(String.valueOf(yscale.get(i)))>dec){
+            while(axis.measureText(String.valueOf(Yaxis.get(i)))>dec){
                 axis.setTextSize(axis.getTextSize()-1);
             }
-            int Resize= (int) (axis.getTextSize()/2);
-            axis.setTextSize(Resize);
+            ysize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(ysize);
+        int y_value = ysize[0];
+        axis.setTextSize(y_value/2);*/
+
+        for(int i=0;i<yscale_count;i++) {
+            int count;
             canvas.drawText(String.valueOf((int) yscale.get(i)), xstart-2*(axis.getTextSize()), ystart+5,axis);
-            //..................................................//
             ypixel.put(Float.parseFloat(String.valueOf(yscale.get(i))), ystart);
             int plot=(Integer) yscale.get(i);
             int temp_inc=ysplit/(yinc);
             if(temp_inc!=0) {
-                for (count = 1; count <= yinc; count++) {
+                for (count = 1;count<=yinc; count++) {
                     ++plot;
                     ypixel.put((float) plot, ystart - (temp_inc * count));
                 }
@@ -125,9 +133,20 @@ public class ChartView extends View{
         //.............Ypoint fixing and Yscale Printing...............
         int xstart=dec;  int ystart=length-dec-ysplit;
         HashMap ypixel = new HashMap();
+      /*  int ysize[]=new int[Yaxis.size()];
+        for(int i=0;i<Yaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(Yaxis.get(i)))>dec){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            ysize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(ysize);
+        int y_value = ysize[0];
+        axis.setTextSize(y_value/2);*/
         for(int i=0;i<Yaxis.size();i++) {
-            canvas.drawCircle(xstart, ystart, 5, paint);
-            canvas.drawText(String.valueOf((Object) Yaxis.get(i)), xstart-(dec-10), ystart+5, axis);
+            canvas.drawText(String.valueOf((Object) Yaxis.get(i)), xstart-2*(axis.getTextSize()), ystart, axis);
             ypixel.put(Yaxis.get(i), ystart);
             ystart=ystart-ysplit;
         }
@@ -145,12 +164,23 @@ public class ChartView extends View{
         //.............Xpoint fixing and Xscale Printing...............
         int xstart=dec+xsplit;int ystart=length-dec;
         HashMap xpixel = new HashMap();
+        int xsize[]=new int[Xaxis.size()];
+        for(int i=0;i<Xaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(Xaxis.get(i)))>xsplit){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            xsize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(xsize);
+        int x_value = xsize[Xaxis.size()/2];
+        axis.setTextSize(x_value/2);
         for(int i=0;i<Xaxis.size();i++) {
-           // canvas.drawCircle(xstart, ystart, 5, paint);
-            canvas.drawText( String.valueOf( Xaxis.get(i)), xstart, ystart+(dec/3),axis);
+            canvas.drawText(String.valueOf(Xaxis.get(i)), xstart-(axis.getTextSize()), ystart+(dec/3),axis);
             xpixel.put( Xaxis.get(i), xstart);
             xstart+=xsplit;
-        }
+        }xpixel.put("xscale_count",Xaxis.size());
         return  xpixel;
     }
     public HashMap xNumber(ArrayList Xaxis,Canvas canvas,int length,int breadth,int dec) {
@@ -210,20 +240,24 @@ public class ChartView extends View{
         //...........xpoint fixing and Xscale Printing...................
         int xstart=dec+xsplit;int ystart=length-dec;
         HashMap xpixel = new HashMap();
+
+        int xsize[]=new int[Xaxis.size()];
+        for(int i=0;i<Xaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(Xaxis.get(i)))>xsplit){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            xsize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(xsize);
+        int x_value = xsize[0];
+        axis.setTextSize(x_value/2);
+
         int temp_inc=(int) (xsplit)/(xinc);
         for(int i=0;i<xscale_count;i++) {
             int count;
-         //   canvas.drawCircle(xstart, ystart, 5, paint);
-
-            //...............Resizing the txt...............//
-            axis.setTextSize(130);
-            while(axis.measureText(String.valueOf(xscale.get(i)))>xsplit){
-                axis.setTextSize(axis.getTextSize()-1);
-            }
-            int Resize= (int) (axis.getTextSize()/2);
-            axis.setTextSize(Resize);
             canvas.drawText(String.valueOf((int) xscale.get(i)), xstart-(axis.getTextSize()), ystart+(dec/3),axis);
-            //.....................................................//
             xpixel.put(Float.parseFloat(String.valueOf(xscale.get(i))), xstart);
             int plot=( int) xscale.get(i);
             if(temp_inc!=0) {
@@ -244,6 +278,7 @@ public class ChartView extends View{
 
             }
         }
+        xpixel.put("xscale_count",xscale_count);
         return  xpixel;
     }
     //........................Function To check X Range Format.......................

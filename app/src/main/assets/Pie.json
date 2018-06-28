@@ -35,40 +35,6 @@
         "x":"Brazil",
         "y": 50,
         "colour": "#850602"
-      }, {
-        "x": "India",
-        "y": 100,
-        "colour": "#0F8BFE"
-      },
-      {
-        "x": "RSA",
-        "y": 50,
-        "colour": "#05F52D"
-      },
-      {
-        "x": "Australia",
-        "y": 20,
-        "colour": "#F8ED06"
-      },
-      {
-        "x": "Pakistan",
-        "y": 60,
-        "colour": "#1B4702"
-      },
-      {
-        "x": "England",
-        "y": 80,
-        "colour": "#0611F8"
-      },
-      {
-        "x": "WestIndies",
-        "y": 50,
-        "colour": "#510602"
-      },
-      {
-        "x":"Brazil",
-        "y": 50,
-        "colour": "#850602"
       }
     ]
   }

@@ -85,11 +85,11 @@ public class LineChartView extends ChartView {
             labels.setTextSize(dec/2);
             canvas.drawText(String.valueOf(heading), dec*4, (dec/2), labels);
 
-            labels.setTextSize(dec/4);
+            labels.setTextSize(dec/3);
             canvas.drawText((String) Labels.get(0), breadth/2, (dec/2)+(dec/3), labels);
             Path path = new Path();
             path.moveTo(breadth-(dec-(dec/2)),length/2);
-            path.lineTo(breadth-(dec-(dec/2)),length/2-100);
+            path.lineTo(breadth-(dec-(dec/2)),length);
             canvas.drawPath(path,labels);
             canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);
 
@@ -144,14 +144,27 @@ public class LineChartView extends ChartView {
                     break;
             }
             //.........PLOTTING..............
-            plot(Xaxis,Yaxis,xplot,yplot,canvas,xc,yc);
+            plot(Xaxis,Yaxis,xplot,yplot,canvas,xc,yc,dec);
         } else {
             return;
         }
     }
-    private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc) {
+    private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc,int dec) {
         labels.setStrokeWidth( cvalues.getStrokewidth());
         int s=xaxis.size();
+       /* int xsplit=((getWidth()-dec)-dec)/xaxis.size();
+        int xsize[]=new int[xaxis.size()];
+        for(int i=0;i<xaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(xaxis.get(i)))>xsplit){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            xsize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(xsize);
+        int x_value = xsize[xaxis.size()/2];
+        axis.setTextSize(x_value/2);*/
         int x_i[] = new int[xaxis.size()];
         int y_i[] = new int[yaxis.size()];
         if((xc==1)&&(yc==1)) { //X and Y String
@@ -234,6 +247,7 @@ public class LineChartView extends ChartView {
             }
             for (int w11 = 0; w11 <xaxis.size() - 1; w11++) {
                 canvas.drawLine(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
+
             }
         }
         if((xc==2)&&(yc==1)) {   //X Number....Y String....//
@@ -405,8 +419,13 @@ public class LineChartView extends ChartView {
             }
         }
         for (int w11 = 0; w11 <xaxis.size() - 1; w11++) {
-            canvas.drawLine(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
-          //  canvas.d(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
+          canvas.drawLine(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
+           /* Path p=new Path();
+            labels.setStyle(Paint.Style.STROKE);
+            labels.setColor(Color.BLACK);
+            p.moveTo(x_i[w11], y_i[w11]);
+            p.quadTo(0f,0f,x_i[w11 + 1], y_i[w11 + 1]);
+            canvas.drawPath(p,labels);*/
         }
     }
 }

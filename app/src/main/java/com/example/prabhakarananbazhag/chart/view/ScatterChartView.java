@@ -91,35 +91,20 @@ public class ScatterChartView extends ChartView{
           //  plot.setTextAlign(Paint.Align.CENTER);
             StringBuffer heading =new StringBuffer();
             heading.append(Labels.get(0)+" vs "+Labels.get(1));
-
             //...............Resizing the txt...............//
+            float heading_size=labels.measureText(String.valueOf(heading));
+            int text_center= (int) (heading_size/2);
+            int canvas_center=breadth/2;
+            int txt_start=canvas_center-text_center;
             labels.setTextSize(dec/2);
-            canvas.drawText(String.valueOf(heading), dec*4, (dec/2), labels);
-
-            labels.setTextSize(dec/4);
+            canvas.drawText(String.valueOf(heading), txt_start, (dec/2), labels);
+            labels.setTextSize(dec/3);
             canvas.drawText((String) Labels.get(0), breadth/2, (dec/2)+(dec/3), labels);
             Path path = new Path();
             path.moveTo(breadth-(dec-(dec/2)),length/2);
-            path.lineTo(breadth-(dec-(dec/2)),length/2-100);
+            path.lineTo(breadth-(dec-(dec/2)),length);
             canvas.drawPath(path,labels);
             canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);
-
-           /* labels.setTextAlign(Paint.Align.CENTER);
-            int size=getWidth()/30;
-            int size1=dec/4;
-            labels.setTextSize(size);
-            labels.setTextSize(size1);
-            StringBuffer heading =new StringBuffer();
-            heading.append(Labels.get(0)+" vs "+Labels.get(1));
-            canvas.drawText(String.valueOf(heading), breadth/2, size1, labels);
-            int size2=dec/6;
-            labels.setTextSize(size1);
-            canvas.drawText((String) Labels.get(0), breadth/2, size1*3, labels);
-            Path path = new Path();
-            path.moveTo(length-(2*size),length/2);
-            path.lineTo(length-50,length/2-100);
-            canvas.drawPath(path, labels);
-            canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);*/
             //...............Rectangle Creation..............
             paint.setColor(Color.BLACK);
             paint.setStyle(Paint.Style.STROKE);
@@ -174,13 +159,26 @@ public class ScatterChartView extends ChartView{
                     break;
             }
             //.........PLOTTING..............
-            plot(Xaxis,Yaxis,xplot,yplot,canvas,xc,yc);
+            plot(Xaxis,Yaxis,xplot,yplot,canvas,xc,yc,dec);
         } else {
             return;
         }
     }
-    private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc) {
+    private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc,int dec) {
         int s=xaxis.size();
+        /*int xsplit=((getWidth()-dec)-dec)/xaxis.size();
+        int xsize[]=new int[xaxis.size()];
+        for(int i=0;i<xaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(xaxis.get(i)))>xsplit){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            xsize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(xsize);
+        int x_value = xsize[xaxis.size()/2];
+        axis.setTextSize(x_value/2);*/
         if((xc==1)&&(yc==1)) { //X and Y String
             for (int j = 0; j < s; j++) {
                 String val1=(String) xaxis.get(j);
@@ -205,7 +203,6 @@ public class ScatterChartView extends ChartView{
                     Object xcc =  xplot.get(val1);
                     StringBuffer label=new StringBuffer();
                     label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
-
                     canvas.drawText(String.valueOf(label), (int)xcc-10, (int)ycc-10, labels);
                     canvas.drawCircle((int) xcc, (int) ycc, 8, plot);
                 }
@@ -247,12 +244,10 @@ public class ScatterChartView extends ChartView{
                     Object xcc_f =  xplot.get(val1);
                     StringBuffer label=new StringBuffer();
                     label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
-
                     canvas.drawText(String.valueOf(label), (int)xcc_f-10, (int)val-10, labels);
                     canvas.drawCircle((int)xcc_f,(int) val, 8, plot);
                 }
             }
-
         }
         if((xc==2)&&(yc==1)) {   //X Number....Y String....//
             for (int j = 0; j < s; j++) {
@@ -267,7 +262,6 @@ public class ScatterChartView extends ChartView{
                     Object ycc =  yplot.get(val2);
                     StringBuffer label=new StringBuffer();
                     label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
-
                     canvas.drawText(String.valueOf(label), (int)xcc-10, (int)ycc-10, labels);
                     canvas.drawCircle((int) xcc, (int) ycc, 8, plot);
                 }
@@ -313,7 +307,6 @@ public class ScatterChartView extends ChartView{
                     canvas.drawCircle((int)val,(int) ycc_f, 8, plot);
                 }
             }
-
         }
         if((xc==2)&&(yc==2)) {    //X And Y Number
             Object xcc_f,ycc_f;
@@ -323,15 +316,12 @@ public class ScatterChartView extends ChartView{
                 float tc_x=Float.parseFloat(val2_x);
                 //Check wheather the number is Integer or Float..........
                 if((xplot.containsKey(tc_x))) {
-                    Log.i("Enter xi","Enterinhg x int ");
                     float new_value_x=  Float.parseFloat((String)xaxis.get(j));
                     String val1_x= (String) xaxis.get(j);
                     float temp_val1_x=Float.parseFloat(val1_x);
                     xcc_f = (int) xplot.get(temp_val1_x);
-                    Log.i("msg","1 x");
                 }
                 else {
-                    Log.i("Enter xf","Entering x float");
                     float val_x;
                     //...............Float Logic.....
                     float xcc_x =Float.parseFloat((String) xaxis.get(j));
@@ -351,7 +341,6 @@ public class ScatterChartView extends ChartView{
                     //...........Distance between two Elements.................
                     int distance_x;
                     Object temp1=xplot.get((float)integer_part_x);
-                    Log.i("S", String.valueOf(temp1));
                     Object temp2;
                     int v=s-1;
                     if(j==v) {
@@ -367,24 +356,18 @@ public class ScatterChartView extends ChartView{
                     float pixel_new= (float)((float)internal_distance_x*decimal_part_x) ;
                     val_x=(int)temp1+pixel_new;
                     xcc_f = (int)val_x;
-                    Log.i("msg","Exit X float");
-
                 }
                 //....................Corresponding Y Range....................//
                 String val2_y=(String) yaxis.get(j);
                 float tc_y=Float.parseFloat(val2_y);
                 //Check wheather the number is Integer or Float..........
                 if((yplot.containsKey(tc_y))) {
-                    Log.i("Enter yi","Enterinhg y int ");
                     float new_value_y=  Float.parseFloat((String)yaxis.get(j));
                     String val1_y= (String) yaxis.get(j);
                     float temp_val1_y=Float.parseFloat(val1_y);
                     ycc_f = (int) yplot.get(temp_val1_y);
-                    Log.i("y ", String.valueOf((int)ycc_f));
-                    Log.i("msg","123");
                 }
                 else {
-                    Log.i("Enter yf ","Enterinhg y float ");
                     float val_y;
                     //...............Float Logic.....
                     float xcc_y =Float.parseFloat((String) yaxis.get(j));

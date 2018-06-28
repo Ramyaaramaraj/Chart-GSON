@@ -14,7 +14,8 @@ public class PieChartData  implements Serializable{
     }
   public class Data {
         public String x;
-
+      public int y;
+      public String  colour;
       public String getX() {
           return x;
       }
@@ -23,11 +24,11 @@ public class PieChartData  implements Serializable{
           this.x = x;
       }
 
-      public Float getY() {
+      public int getY() {
           return y;
       }
 
-      public void setY(Float y) {
+      public void setY(int y) {
           this.y = y;
       }
 
@@ -39,7 +40,5 @@ public class PieChartData  implements Serializable{
           this.colour = colour;
       }
 
-      public Float y;
-        public String  colour;
     }
 }

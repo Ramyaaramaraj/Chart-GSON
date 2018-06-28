@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.util.Log;
 import com.example.prabhakarananbazhag.chart.model.BarChartData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class BarChartView extends ChartView {
@@ -27,6 +29,7 @@ public class BarChartView extends ChartView {
         point.setColor(Color.BLUE);
         plot.setColor(Color.BLACK);
         axis.setColor(Color.RED);
+        //axis.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         coordinate.setColor(Color.MAGENTA);
         labels.setColor(Color.BLACK);
     }
@@ -83,11 +86,12 @@ public class BarChartView extends ChartView {
             canvas.drawText(String.valueOf(heading), dec*4, (dec/2), labels);
 
 
-             labels.setTextSize(dec/4);
+             labels.setTextSize(dec/3);
              canvas.drawText((String) Labels.get(0), breadth/2, (dec/2)+(dec/3), labels);
            Path path = new Path();
            path.moveTo(breadth-(dec-(dec/2)),length/2);
-           path.lineTo(breadth-(dec-(dec/2)),length/2-100);
+           //path.lineTo(breadth-(dec-(dec/2)),length/2-100);
+            path.lineTo(breadth-(dec-(dec/2)),length);
            canvas.drawPath(path,labels);
            canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);
             //...............Rectangle Creation..............
@@ -148,6 +152,20 @@ public class BarChartView extends ChartView {
     private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc,String Barwidth,ArrayList Colours,int length,int dec) {
         int s=xaxis.size();
         int width=Integer.parseInt(Barwidth)/2;
+     /*   int scale_count= (int) xplot.get("xscale_count");
+        int xsplit=((getWidth()-dec)-dec)/scale_count;
+        int xsize[]=new int[xaxis.size()];
+        for(int i=0;i<xaxis.size();i++)
+        {
+            axis.setTextSize(130);
+            while(axis.measureText(String.valueOf(xaxis.get(i)))>xsplit){
+                axis.setTextSize(axis.getTextSize()-1);
+            }
+            xsize[i]= (int) axis.getTextSize();
+        }
+        Arrays.sort(xsize);
+        int x_value = xsize[xaxis.size()/2];
+        axis.setTextSize(x_value/2);*/
         if((xc==1)&&(yc==1)) { //X and Y String
             for (int j = 0; j < s; j++) {
                 String val1=(String) xaxis.get(j);
@@ -158,7 +176,7 @@ public class BarChartView extends ChartView {
                 Bar.setColor(Color.parseColor((String) Colours.get(j)));
                 StringBuffer label=new StringBuffer();
                 label.append(xaxis.get(j));
-                canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, point);
+                canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, labels);
                 canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
             }
         }
@@ -176,7 +194,7 @@ public class BarChartView extends ChartView {
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
                     label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, point);
+                    canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, labels);
                     canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
                 }
                 else {
@@ -219,7 +237,7 @@ public class BarChartView extends ChartView {
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
                     label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)val-10, point);
+                    canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)val-10, labels);
                     canvas.drawRect((int) xcc_f-width,(int)val,(int) xcc_f+width,length-dec,Bar);
                 }
             }
@@ -239,7 +257,7 @@ public class BarChartView extends ChartView {
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
                     label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)xcc-width/2, (int)ycc-10, point);
+                    canvas.drawText(String.valueOf(label), (int)xcc-width/2, (int)ycc-10, labels);
                     canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
                 }
                 else {
@@ -282,7 +300,7 @@ public class BarChartView extends ChartView {
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
                     label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)val-width, (int)ycc_f-10, point);
+                    canvas.drawText(String.valueOf(label), (int)val-width, (int)ycc_f-10, labels);
                     canvas.drawRect((int) val-width,(int)ycc_f,(int) val+width,length-dec,Bar);
                 }
             }
@@ -387,7 +405,7 @@ public class BarChartView extends ChartView {
                 Bar.setColor(Color.parseColor((String) Colours.get(j)));
                 StringBuffer label=new StringBuffer();
                 label.append(xaxis.get(j));
-                canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)ycc_f-10, point);
+                canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)ycc_f-10, labels);
                 canvas.drawRect((int) xcc_f-width,(int)ycc_f,(int) xcc_f+width,length-dec,Bar);
             }
         }
