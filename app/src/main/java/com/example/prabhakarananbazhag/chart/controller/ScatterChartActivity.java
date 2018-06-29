@@ -20,13 +20,11 @@ public class ScatterChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scatter_chart_activity);
         ScatterChartView dl = (ScatterChartView) findViewById(R.id.scatter);
-        try {
-            dl.setvalues(getjson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        dl.setvalues(getjson());
+        dl.start(getjson().getPlot().size());
+
     }
-    public ScatterChartData getjson() throws JSONException {
+    public ScatterChartData getjson()  {
         String json = null;
         try {
             InputStream inputStream = getAssets().open("Bar.json");

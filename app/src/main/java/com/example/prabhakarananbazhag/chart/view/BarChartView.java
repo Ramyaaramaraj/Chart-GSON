@@ -4,16 +4,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-
 import com.example.prabhakarananbazhag.chart.model.BarChartData;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class BarChartView extends ChartView {
     Paint paint = new Paint();
@@ -84,8 +82,6 @@ public class BarChartView extends ChartView {
             //...............Resizing the txt...............//
             labels.setTextSize(dec/2);
             canvas.drawText(String.valueOf(heading), dec*4, (dec/2), labels);
-
-
              labels.setTextSize(dec/3);
              canvas.drawText((String) Labels.get(0), breadth/2, (dec/2)+(dec/3), labels);
            Path path = new Path();
@@ -94,6 +90,7 @@ public class BarChartView extends ChartView {
             path.lineTo(breadth-(dec-(dec/2)),length);
            canvas.drawPath(path,labels);
            canvas.drawTextOnPath((String) Labels.get(1),path,0,0,labels);
+
             //...............Rectangle Creation..............
             paint.setColor(Color.BLACK);
             paint.setStyle(Paint.Style.STROKE);
@@ -354,7 +351,6 @@ public class BarChartView extends ChartView {
                     float pixel_new= (float)((float)internal_distance_x*decimal_part_x) ;
                     val_x=(int)temp1+pixel_new;
                     xcc_f = (int)val_x;
-
                 }
                 //....................Corresponding Y Range....................//
                 String val2_y=(String) yaxis.get(j);
@@ -406,6 +402,22 @@ public class BarChartView extends ChartView {
                 StringBuffer label=new StringBuffer();
                 label.append(xaxis.get(j));
                 canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)ycc_f-10, labels);
+               postInvalidateDelayed(TimeUnit.SECONDS.toMillis(500));
+               /* try {
+                    wait(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Handler handler1 = new Handler();
+
+                    handler1.postDelayed(new Runnable() {
+//Log.i("Qw","qww");
+                        @Override
+                        public void run() {
+                        }
+                    }, 1000);*/
+
+                //Thread.sleep( Long.parseLong(stringlist[1]) );
                 canvas.drawRect((int) xcc_f-width,(int)ycc_f,(int) xcc_f+width,length-dec,Bar);
             }
         }

@@ -4,12 +4,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 public class ChartView extends View{
     Paint plot = new Paint(Color.BLACK);
     Paint paint=new Paint(Color.GRAY);
@@ -20,7 +23,6 @@ public class ChartView extends View{
         plot.setColor(Color.BLACK);
         axis.setColor(Color.RED);
         axis.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-
     }
     public ChartView(Context context) {
         super(context);
@@ -183,7 +185,7 @@ public class ChartView extends View{
         }xpixel.put("xscale_count",Xaxis.size());
         return  xpixel;
     }
-    public HashMap xNumber(ArrayList Xaxis,Canvas canvas,int length,int breadth,int dec) {
+    public HashMap xNumber(ArrayList Xaxis, final Canvas canvas, int length, int breadth, int dec) {
         //.............Xarray Creation................
         int xaxisvalues[]=new int[Xaxis.size()];
         for(int i=0;i<Xaxis.size();i++) {
@@ -232,6 +234,16 @@ public class ChartView extends View{
         //...........Vertical Lines...............
         int vxs = dec, vxst =dec, vys = dec, vyst = length-dec;
         int xsplit=((breadth-dec)-dec)/xscale_count;
+        ////////////////////////////////////////
+       /* final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+            }
+        }, 100);
+       */ ///////////////////////////////////////
+
         for (int i = 0; i <xscale_count; i++) {
             canvas.drawLine(vxs, vys, vxst, vyst, plot);
             vxs = vxs + xsplit;
@@ -240,7 +252,6 @@ public class ChartView extends View{
         //...........xpoint fixing and Xscale Printing...................
         int xstart=dec+xsplit;int ystart=length-dec;
         HashMap xpixel = new HashMap();
-
         int xsize[]=new int[Xaxis.size()];
         for(int i=0;i<Xaxis.size();i++)
         {
@@ -253,7 +264,6 @@ public class ChartView extends View{
         Arrays.sort(xsize);
         int x_value = xsize[0];
         axis.setTextSize(x_value/2);
-
         int temp_inc=(int) (xsplit)/(xinc);
         for(int i=0;i<xscale_count;i++) {
             int count;
@@ -275,7 +285,6 @@ public class ChartView extends View{
                     xpixel.put((float) plot, xstart + (temp_inc * count));
                 }
                 xstart += xsplit;
-
             }
         }
         xpixel.put("xscale_count",xscale_count);

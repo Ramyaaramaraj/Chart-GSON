@@ -1,10 +1,11 @@
 package com.example.prabhakarananbazhag.chart.controller;
-
-
+import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.example.prabhakarananbazhag.chart.model.BarChartData;
 import com.example.prabhakarananbazhag.chart.R;
@@ -20,22 +21,21 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
-
 public class BarChartActivity extends AppCompatActivity {
-    @Override
 
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bar_chart_activity);
         BarChartView dl = (BarChartView) findViewById(R.id.bar);
         try {
             dl.setvalues(getjson());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+        }
     public BarChartData getjson() throws JSONException {
         String json = null;
         try {

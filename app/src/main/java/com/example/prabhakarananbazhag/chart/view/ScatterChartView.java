@@ -1,4 +1,5 @@
 package com.example.prabhakarananbazhag.chart.view;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,7 +20,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.concurrent.TimeUnit;
+
 public class ScatterChartView extends ChartView{
+    int no_of_iteration=0;
+    public ValueAnimator mTimerAnimator;
     Paint lines=new Paint();
     Paint plot = new Paint();
     Paint scale = new Paint();
@@ -406,10 +411,22 @@ public class ScatterChartView extends ChartView{
                 StringBuffer label=new StringBuffer();
                 label.append("("+xaxis.get(j)+","+yaxis.get(j)+")");
                 canvas.drawText(String.valueOf(label), (int)xcc_f-10, (int)ycc_f-10, labels);
+
                 canvas.drawCircle((int) xcc_f, (int)ycc_f, 8, plot);
             }
         }
 
+    }
+    public void start(int secs) {
+       mTimerAnimator.setIntValues(secs);
+        mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(secs));
+        mTimerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                no_of_iteration=(int)animation.getAnimatedValue();
+                invalidate();
+            }});
+        mTimerAnimator.start();
     }
 
 }

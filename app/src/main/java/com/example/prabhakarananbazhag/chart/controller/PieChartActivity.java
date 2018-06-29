@@ -19,7 +19,7 @@ public class PieChartActivity extends AppCompatActivity {
         setContentView(R.layout.pie_chart_activity);
         PieChartView mc = (PieChartView) findViewById(R.id.grap);
         mc.setdata(getjson());
-        //mc.start(getjson().getMatches().size());
+        mc.start(getjson().getData().size());
     }
 
     public PieChartData getjson() {
