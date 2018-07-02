@@ -1,4 +1,5 @@
 package com.example.prabhakarananbazhag.chart.view;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,11 +10,15 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import com.example.prabhakarananbazhag.chart.model.BarChartData;
+import com.example.prabhakarananbazhag.chart.model.ScatterChartData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class BarChartView extends ChartView {
+    int animationBarCount=0;
+    public ValueAnimator mTimerAnimator;
     Paint paint = new Paint();
     Paint point = new Paint();
     Paint plot = new Paint();
@@ -37,7 +42,8 @@ public class BarChartView extends ChartView {
     BarChartData cvalues;
     public void setvalues(BarChartData cd) {
         cvalues =cd;
-        postInvalidate();
+        mTimerAnimator=new ValueAnimator();
+        //postInvalidate();
     }
     @Override
     public void onDraw(Canvas canvas) {
@@ -142,6 +148,7 @@ public class BarChartView extends ChartView {
             }
             //.........PLOTTING..............
             plot(Xaxis,Yaxis,xplot,yplot,canvas,xc,yc,BarWidth,Colours,length,dec);
+
         } else {
             return;
         }
@@ -149,22 +156,9 @@ public class BarChartView extends ChartView {
     private void plot(ArrayList xaxis, ArrayList yaxis,  HashMap xplot, HashMap yplot, Canvas canvas, int xc, int yc,String Barwidth,ArrayList Colours,int length,int dec) {
         int s=xaxis.size();
         int width=Integer.parseInt(Barwidth)/2;
-     /*   int scale_count= (int) xplot.get("xscale_count");
-        int xsplit=((getWidth()-dec)-dec)/scale_count;
-        int xsize[]=new int[xaxis.size()];
-        for(int i=0;i<xaxis.size();i++)
-        {
-            axis.setTextSize(130);
-            while(axis.measureText(String.valueOf(xaxis.get(i)))>xsplit){
-                axis.setTextSize(axis.getTextSize()-1);
-            }
-            xsize[i]= (int) axis.getTextSize();
-        }
-        Arrays.sort(xsize);
-        int x_value = xsize[xaxis.size()/2];
-        axis.setTextSize(x_value/2);*/
         if((xc==1)&&(yc==1)) { //X and Y String
             for (int j = 0; j < s; j++) {
+                if(j<=animationBarCount){
                 String val1=(String) xaxis.get(j);
                 String val2=(String)yaxis.get(j);
                 Object xcc =  xplot.get(val1);
@@ -172,75 +166,76 @@ public class BarChartView extends ChartView {
                 canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
                 Bar.setColor(Color.parseColor((String) Colours.get(j)));
                 StringBuffer label=new StringBuffer();
-                label.append(xaxis.get(j));
+                label.append(yaxis.get(j));
                 canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, labels);
                 canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
-            }
+            }}
         }
         if((xc==1)&&(yc==2)) {  //X String Y Float
             for (int j = 0; j < s; j++) {
-                String val2=(String) yaxis.get(j);
-                float tc=Float.parseFloat(val2);
-                //Check wheather the number is Integer or Float..........
-                if((yplot.containsKey(tc))) {
-                    float new_value=  Float.parseFloat((String)yaxis.get(j));
-                    String val1= (String) xaxis.get(j);
-                    Object ycc =  yplot.get(new_value);
-                    Object xcc =  xplot.get(val1);
-                    // canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
-                    Bar.setColor(Color.parseColor((String) Colours.get(j)));
-                    StringBuffer label=new StringBuffer();
-                    label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)xcc-width, (int)ycc-10, labels);
-                    canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
-                }
-                else {
-                    float val;
-                    //...............Float Logic.....
-                    float xcc =Float.parseFloat((String) yaxis.get(j));
-                    //...........Integer part separation........
-                    int integer_part= (int) xcc;
-                    //........Decimal part separation........
-                    String dot=".";
-                    int count=0;
-                    for(int d=0;d<val2.length();d++) {
-                        if(String.valueOf(val2.charAt(d)).equals(dot)) {
-                            ++count;
-                            break;
+                if (j <= animationBarCount) {
+                    String val2 = (String) yaxis.get(j);
+                    float tc = Float.parseFloat(val2);
+                    //Check wheather the number is Integer or Float..........
+                    if ((yplot.containsKey(tc))) {
+                        float new_value = Float.parseFloat((String) yaxis.get(j));
+                        String val1 = (String) xaxis.get(j);
+                        Object ycc = yplot.get(new_value);
+                        Object xcc = xplot.get(val1);
+                        // canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
+                        Bar.setColor(Color.parseColor((String) Colours.get(j)));
+                        StringBuffer label = new StringBuffer();
+                        label.append(yaxis.get(j));
+                        canvas.drawText(String.valueOf(label), (int) xcc - width, (int) ycc - 10, labels);
+                        canvas.drawRect((int) xcc - width, (int) ycc, (int) xcc + width, length - dec, Bar);
+                    } else {
+                        float val;
+                        //...............Float Logic.....
+                        float xcc = Float.parseFloat((String) yaxis.get(j));
+                        //...........Integer part separation........
+                        int integer_part = (int) xcc;
+                        //........Decimal part separation........
+                        String dot = ".";
+                        int count = 0;
+                        for (int d = 0; d < val2.length(); d++) {
+                            if (String.valueOf(val2.charAt(d)).equals(dot)) {
+                                ++count;
+                                break;
+                            }
                         }
+                        String decimal = val2.substring(count + 1);
+                        float decimal_part = Float.parseFloat((decimal));
+                        //...........Distance between two Elements.................
+                        int distance;
+                        Object temp1 = yplot.get((float) integer_part);
+                        Object temp2;
+                        int v = s - 1;
+                        if (j == v) {
+                            temp2 = yplot.get((float) integer_part - 1);
+                        } else {
+                            temp2 = yplot.get((float) integer_part + 1);
+                        }
+                        distance = (int) temp2 - (int) temp1;
+                        //.................Internal Distance Calculation..............
+                        float internal_distance = (float) distance / 100;
+                        //..........New Pixel......
+                        float pixel_new = (float) ((float) internal_distance * decimal_part);
+                        val = (int) temp1 + pixel_new;
+                        String val1 = (String) xaxis.get(j);
+                        Object xcc_f = xplot.get(val1);
+                        //   canvas.drawCircle((int)xcc_f,(int) val, 5, coordinate);
+                        Bar.setColor(Color.parseColor((String) Colours.get(j)));
+                        StringBuffer label = new StringBuffer();
+                        label.append(yaxis.get(j));
+                        canvas.drawText(String.valueOf(label), (int) xcc_f - width, (int) val - 10, labels);
+                        canvas.drawRect((int) xcc_f - width, (int) val, (int) xcc_f + width, length - dec, Bar);
                     }
-                    String decimal=val2.substring(count+1);
-                    float decimal_part=Float.parseFloat((decimal));
-                    //...........Distance between two Elements.................
-                    int distance;
-                    Object temp1=yplot.get((float)integer_part);
-                    Object temp2;
-                    int v=s-1;
-                    if(j==v) {
-                        temp2=yplot.get((float)integer_part-1);
-                    }
-                    else {
-                        temp2=yplot.get((float)integer_part+1);
-                    }
-                    distance=(int)temp2-(int)temp1;
-                    //.................Internal Distance Calculation..............
-                    float internal_distance=(float)distance/100;
-                    //..........New Pixel......
-                    float pixel_new= (float)((float)internal_distance*decimal_part) ;
-                    val=(int)temp1+pixel_new;
-                    String val1= (String) xaxis.get(j);
-                    Object xcc_f =  xplot.get(val1);
-                    //   canvas.drawCircle((int)xcc_f,(int) val, 5, coordinate);
-                    Bar.setColor(Color.parseColor((String) Colours.get(j)));
-                    StringBuffer label=new StringBuffer();
-                    label.append(xaxis.get(j));
-                    canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)val-10, labels);
-                    canvas.drawRect((int) xcc_f-width,(int)val,(int) xcc_f+width,length-dec,Bar);
                 }
             }
         }
         if((xc==2)&&(yc==1)) {   //X Number....Y String....//
             for (int j = 0; j < s; j++) {
+                if(j<=animationBarCount){
                 //int val1=Integer.parseInt ((String) xaxis.get(j));;
                 String val1=(String) xaxis.get(j);
                 float tc=Float.parseFloat(val1);
@@ -253,7 +248,7 @@ public class BarChartView extends ChartView {
                     //canvas.drawCircle((int) xcc, (int) ycc, 5, coordinate);
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
-                    label.append(xaxis.get(j));
+                    label.append(yaxis.get(j));
                     canvas.drawText(String.valueOf(label), (int)xcc-width/2, (int)ycc-10, labels);
                     canvas.drawRect((int) xcc-width,(int)ycc,(int) xcc+width,length-dec,Bar);
                 }
@@ -296,15 +291,16 @@ public class BarChartView extends ChartView {
                     //canvas.drawCircle((int)val,(int) ycc_f, 5, coordinate);
                     Bar.setColor(Color.parseColor((String) Colours.get(j)));
                     StringBuffer label=new StringBuffer();
-                    label.append(xaxis.get(j));
+                    label.append(yaxis.get(j));
                     canvas.drawText(String.valueOf(label), (int)val-width, (int)ycc_f-10, labels);
                     canvas.drawRect((int) val-width,(int)ycc_f,(int) val+width,length-dec,Bar);
                 }
-            }
+            }}
         }
         if((xc==2)&&(yc==2)) {    //X And Y Number
             Object xcc_f,ycc_f;
             for (int j = 0; j < s; j++) {
+                if(j<=animationBarCount){
                 //....................Corresponding X Range....................//
                 String val2_x=(String) xaxis.get(j);
                 float tc_x=Float.parseFloat(val2_x);
@@ -400,26 +396,22 @@ public class BarChartView extends ChartView {
                 }
                 Bar.setColor(Color.parseColor((String) Colours.get(j)));
                 StringBuffer label=new StringBuffer();
-                label.append(xaxis.get(j));
+                label.append(yaxis.get(j));
                 canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)ycc_f-10, labels);
-               postInvalidateDelayed(TimeUnit.SECONDS.toMillis(500));
-               /* try {
-                    wait(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Handler handler1 = new Handler();
-
-                    handler1.postDelayed(new Runnable() {
-//Log.i("Qw","qww");
-                        @Override
-                        public void run() {
-                        }
-                    }, 1000);*/
-
-                //Thread.sleep( Long.parseLong(stringlist[1]) );
+             postInvalidateDelayed(TimeUnit.SECONDS.toMillis(9000));
                 canvas.drawRect((int) xcc_f-width,(int)ycc_f,(int) xcc_f+width,length-dec,Bar);
             }
-        }
+        }}
     }
-}
+    public void start(int size) {
+        mTimerAnimator.setIntValues(0, size);
+        mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(5));
+        mTimerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                animationBarCount = (int) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        mTimerAnimator.start();
+    }}

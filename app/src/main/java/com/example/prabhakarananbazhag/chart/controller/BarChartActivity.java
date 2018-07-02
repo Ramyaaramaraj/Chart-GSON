@@ -29,14 +29,13 @@ public class BarChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bar_chart_activity);
         BarChartView dl = (BarChartView) findViewById(R.id.bar);
-        try {
-            dl.setvalues(getjson());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            dl.setvalues(getjson());
+        dl.start(getjson().getPlot().size());
+
+
         }
-        }
-    public BarChartData getjson() throws JSONException {
+    public BarChartData getjson()  {
         String json = null;
         try {
             InputStream inputStream = getAssets().open("Bar.json");

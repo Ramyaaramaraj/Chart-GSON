@@ -27,13 +27,12 @@ public class LineChartActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.line_chart_activity);
         LineChartView dl = (LineChartView) findViewById(R.id.line);
-        try {
+
             dl.setvalues(getjson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        dl.start(getjson().getPlot().size());
+
     }
-    public LineChartData getjson() throws JSONException {
+    public LineChartData getjson() {
         String json = null;
         try {
             InputStream inputStream = getAssets().open("Bar.json");

@@ -234,16 +234,6 @@ public class ChartView extends View{
         //...........Vertical Lines...............
         int vxs = dec, vxst =dec, vys = dec, vyst = length-dec;
         int xsplit=((breadth-dec)-dec)/xscale_count;
-        ////////////////////////////////////////
-       /* final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something after 100ms
-            }
-        }, 100);
-       */ ///////////////////////////////////////
-
         for (int i = 0; i <xscale_count; i++) {
             canvas.drawLine(vxs, vys, vxst, vyst, plot);
             vxs = vxs + xsplit;

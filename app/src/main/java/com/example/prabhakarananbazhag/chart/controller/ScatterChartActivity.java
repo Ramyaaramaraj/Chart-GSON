@@ -12,10 +12,8 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 public class ScatterChartActivity extends AppCompatActivity {
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scatter_chart_activity);

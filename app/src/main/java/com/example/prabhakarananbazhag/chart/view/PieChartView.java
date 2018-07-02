@@ -18,7 +18,6 @@ import com.example.prabhakarananbazhag.chart.model.PieChartData;
 import java.util.concurrent.TimeUnit;
 
 public class PieChartView extends View{
-
         Paint paint,paint1;
         PieChartData pieChartData;
         private ValueAnimator mTimerAnimator;
@@ -92,7 +91,6 @@ public class PieChartView extends View{
                     }
                     currentStartArcPosition += currentSweep;
                 }
-
             }else{
                 return;
             }
@@ -108,13 +106,13 @@ public class PieChartView extends View{
                 }});
             mTimerAnimator.start();
         }
+
         public void setdata(PieChartData chartdata){
             pieChartData=chartdata;
             totalValues=0;
             for(int i=0;i<pieChartData.getData().size();i++){
                 totalValues+=pieChartData.getData().get(i).getY();
             }
-
         }
     }
 
