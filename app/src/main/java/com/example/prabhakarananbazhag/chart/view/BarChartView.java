@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BarChartView extends ChartView {
     int animationBarCount=0;
-    public ValueAnimator mTimerAnimator;
+    public ValueAnimator mTimerAnimator,rectangleAnimator;
     Paint paint = new Paint();
     Paint point = new Paint();
     Paint plot = new Paint();
@@ -43,6 +43,7 @@ public class BarChartView extends ChartView {
     public void setvalues(BarChartData cd) {
         cvalues =cd;
         mTimerAnimator=new ValueAnimator();
+        rectangleAnimator=new ValueAnimator();
         //postInvalidate();
     }
     @Override
@@ -398,13 +399,18 @@ public class BarChartView extends ChartView {
                 StringBuffer label=new StringBuffer();
                 label.append(yaxis.get(j));
                 canvas.drawText(String.valueOf(label), (int)xcc_f-width, (int)ycc_f-10, labels);
-             postInvalidateDelayed(TimeUnit.SECONDS.toMillis(9000));
+                if(j<=animationBarCount)
+                {
                 canvas.drawRect((int) xcc_f-width,(int)ycc_f,(int) xcc_f+width,length-dec,Bar);
-            }
+            }}
         }}
     }
     public void start(int size) {
+
         mTimerAnimator.setIntValues(0, size);
+       rectangleAnimator.setIntValues(0,size);
+        rectangleAnimator.setDuration(TimeUnit.SECONDS.toMillis(10));
+
         mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(5));
         mTimerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -414,4 +420,12 @@ public class BarChartView extends ChartView {
             }
         });
         mTimerAnimator.start();
+        rectangleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                animationBarCount   = (int) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        rectangleAnimator.start();
     }}

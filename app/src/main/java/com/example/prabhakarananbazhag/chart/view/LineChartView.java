@@ -408,10 +408,13 @@ public class LineChartView extends ChartView {
                 canvas.drawCircle((int) xcc_f, (int)ycc_f, 5, coordinate);
             }}
         }
-        for (int w11 = 0; w11 <xaxis.size() - 1; w11++) {
+        for (int w11 = 0; w11 <xaxis.size() - 1; w11++)// {if(w11 == 0) {
+        //canvas.drawLine(x_i[w11+1], y_i[w11+1], x_i[w11+1], y_i[w11+1], labels);
+        //}else{
           canvas.drawLine(x_i[w11], y_i[w11], x_i[w11 + 1], y_i[w11 + 1], labels);
         }
-    }
+    //}
+//}
     public void start(int size) {
         mTimerAnimator.setIntValues(0, size);
         mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(10));

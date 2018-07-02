@@ -97,7 +97,7 @@ public class PieChartView extends View{
         }
         public void start(int secs) {
             mTimerAnimator.setIntValues(0,360);
-            mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(secs));
+            mTimerAnimator.setDuration(TimeUnit.SECONDS.toMillis(3));
             mTimerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
